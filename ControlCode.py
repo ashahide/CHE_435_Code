@@ -187,7 +187,12 @@ class TransferFunction(SystemAnalysis):
         return 
         # return Magnitude*Output, self.Time
 
-def PlotResponse(System):
+def PlotResponse(System, FontSize = None):
+
+    if FontSize is None:
+        FontSize = 18
+        
+
     import matplotlib.pyplot as plt 
     plt.style.use('seaborn-darkgrid')
 
@@ -204,14 +209,15 @@ def PlotResponse(System):
 
     fig, ax = plt.subplots()
 
-    ax.plot(System.t, System.Output, color = color, linewidth = LineWidth, label = "TF")
-    ax.set_ylabel("Output", color = color, fontsize = 14)
-    ax.tick_params(axis = 'y', labelcolor = color, labelsize = 12)
-    ax.set_xlabel('Time', fontsize = 14)
+    ax.plot(System.Time, System.Output, color = color, linewidth = LineWidth, label = "TF")
+    ax.tick_params(axis = 'x', labelcolor = 'k', labelsize = FontSize)
+    ax.set_ylabel("Output", color = color, fontsize = FontSize)
+    ax.tick_params(axis = 'y', labelcolor = color, labelsize = FontSize)
+    ax.set_xlabel('Time', fontsize = FontSize)
 
     ax2 = ax.twinx()
-    ax2.set_ylabel("Input", color = 'k', fontsize = 14)
-    ax2.tick_params(axis = 'y', labelcolor = 'k', labelsize = 12)
+    ax2.set_ylabel("Input", color = 'k', fontsize = FontSize)
+    ax2.tick_params(axis = 'y', labelcolor = 'k', labelsize = FontSize)
 
 
     if System.Input == 'Square':
@@ -316,7 +322,10 @@ class DesignFeedback(SystemAnalysis):
         self.Input      = self.G_OL.Type
         self.Output     = self.G_OL.Magnitude*Output
 
-def CompareResults(*Systems, YUnit = None):
+def CompareResults(*Systems, FontSize = None, YUnit = None):
+
+    if FontSize is None:
+        FontSize = 18
 
     if any([i.SysType == 'Closed Loop' for i in Systems]):
 
@@ -339,7 +348,7 @@ def CompareResults(*Systems, YUnit = None):
             else:
                 plt.plot(Systems[i].Output, linewidth = LineWidth, label = f'TF {i+1}')
 
-        plt.legend() 
+        plt.legend(fontsize = FontSize) 
 
         plt.show()
 
@@ -386,9 +395,11 @@ def CompareResults(*Systems, YUnit = None):
             else:
                 plt.plot(Systems[i].Time, Systems[i].Output, color = color, linewidth = LineWidth, label = 'TF {} (Time Delay = {})'.format(i+1, Systems[i].TimeDelay))
 
-            plt.xlabel('Time')
-            plt.ylabel('Output')
-            plt.legend(loc = 'best')
+            plt.xticks(fontsize = FontSize)
+            plt.yticks(fontsize = FontSize)
+            plt.xlabel('Time', fontsize = FontSize)
+            plt.ylabel('Output', fontsize = FontSize)
+            plt.legend(loc = 'best', fontsize = FontSize)
 
         """
         Figure 2: Plot all systems at once
@@ -424,10 +435,11 @@ def CompareResults(*Systems, YUnit = None):
                 plt.plot(Systems[i].Time, Systems[i].Output, SelectColor(Systems[i].Input) + style, linewidth = LineWidth, \
                     label =  f'TF {i+1} ({Systems[i].Input} Input, Magnitude = {Systems[i].Magnitude}, Time Delay = {Systems[i].TimeDelay})')
 
-        
-            plt.legend()
-            plt.xlabel('Time', fontsize = 14)
-            plt.ylabel('Output', fontsize = 14)
+            plt.xticks(fontsize = FontSize)
+            plt.yticks(fontsize = FontSize)
+            plt.legend(loc = 'best', fontsize = FontSize)
+            plt.xlabel('Time', fontsize = FontSize)
+            plt.ylabel('Output', fontsize = FontSize)
 
         plt.show()
 
