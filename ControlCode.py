@@ -135,10 +135,12 @@ class TransferFunction(SystemAnalysis):
         else:
             print("##### Transfer Function Characteristics")
         print("######################################################")
-        if self.Zeros:
-            print(f"## Zeros: {self.Zeros}")
-        else:
+
+        if not list(self.Zeros):
             print(f"## Zeros: None")
+        else:
+            print(f"## Zeros: {[np.round(i,3) for i in self.Zeros]}")
+
         if self.Damping is not None:
             try:
                 print(f"## Damping Coefficient: {np.round(self.Damping[0],3)} ({self.DampingType})")
